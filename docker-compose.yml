@@ -1,0 +1,43 @@
+version: '3'
+services:
+    web2:
+        image: nginx:1.15.6
+        ports:
+            - "8080:80"
+        volumes:
+            - ./docker/web2/default.conf:/etc/nginx/conf.d/default.conf
+            - .:/var/www/html
+    web:
+        image: nginx:1.15.6
+        ports:
+            - "8000:80"
+        depends_on:
+            - app
+        volumes:
+            - ./docker/web/default.conf:/etc/nginx/conf.d/default.conf
+            - .:/var/www/html
+    app:
+        build: ./docker/php
+        depends_on:
+            - mysql
+        volumes:
+            - .:/var/www/html
+        command: >
+            bash -c 'cd backend &&
+            composer install &&
+            php artisan migrate &&
+            cd .. &&
+            php-fpm'
+    mysql:
+        image: mysql:5.7
+        environment:
+            MYSQL_DATABASE: test
+            MYSQL_USER: homestead
+            MYSQL_PASSWORD: secret
+            MYSQL_ROOT_PASSWORD: secret
+        ports:
+            - "3306:3306"
+        volumes:
+            - mysql-test-three-layers:/var/lib/mysql
+volumes:
+    mysql-test-three-layers:

@@ -1,0 +1,13 @@
+backend/node_modules
+backend/public/js/app.js
+backend/public/css/app.css
+backend/public/hot
+backend/public/storage
+backend/storage/*.key
+backend/vendor
+backend/.vagrant
+backend/.env
+backend/database/migrations/.gitkeep
+backend/storage/oauth-private.key
+backend/storage/oauth-public.key
+.DS_Store
